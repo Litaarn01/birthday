@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kejutan Ulang Tahun</title>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background: linear-gradient(135deg, #ffe6eb, #e6f7ff, #fff0f5);
+            padding: 50px;
+        }
+
+        #ucapanSurprise {
+            font-size: 2.5rem;
+            opacity: 0;
+            animation: fadeIn 2s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .slideshow-container {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            margin: 20px auto;
+        }
+
+        .foto-slide {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 15px;
+            display: none;
+        }
+
+        .foto-slide.active {
+            display: block;
+            animation: fadeIn 1.5s ease forwards;
+        }
+
+        #deskripsi {
+            width: 80%;
+            margin: 20px auto;
+            font-size: 18px;
+            color: #333;
+            white-space: pre-wrap;
+            text-align: center;
+            border-right: 2px solid rgba(0,0,0,0.75);
+            overflow: visible;
+        }
+
+        #credit {
+            margin-top: 20px;
+            font-size: 16px;
+            color: #555;
+            font-style: italic;
+        }
+
+        .btn-back {
+            margin-top: 30px;
+            padding: 10px 20px;
+            background-color: #ffd700;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .btn-back:hover {
+            background-color: #ffbf00;
+        }
+    </style>
+</head>
+<body>
+    <h1 id="ucapanSurprise"></h1>
+
+    <div class="slideshow-container">
+        <img src="foto1.jpeg" class="foto-slide active">
+        <img src="foto2.jpeg" class="foto-slide">
+        <img src="foto3.jpeg" class="foto-slide">
+    </div>
+
+    <p id="deskripsi"></p>
+    <p id="credit">Salam Kasih by Elita ❤️</p>
+
+    <button class="btn-back" onclick="window.history.back()">⬅ Kembali</button>
+
+    <script>
+        // Ambil nama dari URL
+        const params = new URLSearchParams(window.location.search);
+        const nama = params.get("nama") || "Sahabat";
+        document.getElementById("ucapanSurprise").textContent = `Selamat Ulang Tahun, ${nama}!`;
+
+        // Confetti efek
+        confetti({
+            particleCount: 150,
+            spread: 80,
+            origin: { y: 0.6 },
+            colors: ['#FFC0CB', '#FFDAB9', '#E6E6FA', '#B0E0E6', '#FFFACD']
+        });
+
+        // Slide foto otomatis
+        let slideIndex = 0;
+        const slides = document.querySelectorAll(".foto-slide");
+        setInterval(() => {
+            slides[slideIndex].classList.remove("active");
+            slideIndex = (slideIndex + 1) % slides.length;
+            slides[slideIndex].classList.add("active");
+        }, 3000);
+
+        // Deskripsi mengetik
+        const text = `Selamat ulang tahun! Semoga hari ini menjadi awal dari perjalanan panjang yang penuh kebahagiaan, cinta, dan keberhasilan. Ingatlah bahwa setiap langkahmu adalah bukti perjuanganmu. Semoga semua impianmu menjadi nyata, dan semua doa terbaik menyertaimu hari ini dan seterusnya. Hidup ini terlalu singkat untuk tidak dirayakan dengan senyuman dan penuh harapan baru.`;
+        let i = 0;
+        function typeWriter() {
+            if (i < text.length) {
+                document.getElementById("deskripsi").textContent += text.charAt(i);
+                i++;
+                setTimeout(typeWriter, 35);
+            }
+        }
+        setTimeout(typeWriter, 1500); // mulai mengetik setelah 1.5 detik
+    </script>
+</body>
+</html>
